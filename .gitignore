@@ -1,0 +1,3 @@
+# Data folders that are more than a GB.
+data/chest_xray
+data/
