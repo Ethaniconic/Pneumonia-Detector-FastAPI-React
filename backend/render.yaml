@@ -1,0 +1,21 @@
+# render.yaml
+services:
+  - type: web
+    name: pneumonia-detector-api
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT --workers 1 --loop uvloop --http httptools
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.12
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: TORCH_NUM_THREADS
+        value: "2"
+      - key: OMP_NUM_THREADS
+        value: "2"
+      - key: INFERENCE_CONCURRENCY
+        value: "1"
+      - key: INFERENCE_MAX_IMAGE_BYTES
+        value: "6291456"

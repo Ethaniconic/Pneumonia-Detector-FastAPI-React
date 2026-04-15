@@ -4,6 +4,7 @@ import FileUploader from '../components/FileUploader';
 import ResultCard from '../components/ResultCard';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const MAX_UPLOAD_BYTES = 6 * 1024 * 1024;
 
 function DiagnosisPage() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -32,6 +33,11 @@ function DiagnosisPage() {
       return;
     }
 
+    if (selectedFile.size > MAX_UPLOAD_BYTES) {
+      setError('Image is too large. Please upload an image smaller than 6 MB.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('file', selectedFile);
 
@@ -41,11 +47,16 @@ function DiagnosisPage() {
     try {
       const response = await axios.post(`${API_BASE_URL}/predict`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
+        timeout: 30000,
       });
       setResult(response.data);
     } catch (requestError) {
       setResult(null);
-      setError(requestError.response?.data?.error || 'Prediction failed. Please verify backend service.');
+      if (requestError.code === 'ECONNABORTED') {
+        setError('Request timed out. Please try a smaller image or try again shortly.');
+      } else {
+        setError(requestError.response?.data?.error || 'Prediction failed. Please verify backend service.');
+      }
     } finally {
       setLoading(false);
     }

@@ -1,7 +1,11 @@
+# requirements.txt
 fastapi
-uvicorn
+uvicorn[standard]
 python-multipart
 torch
 torchvision
 pillow
 numpy
+pydantic
+python-dotenv
+orjson
