@@ -1,4 +1,4 @@
-import { phaseMetrics } from '../data/trainingEvolution';
+import { phaseMetrics } from '../constants/trainingEvolution';
 
 function TrainingProofPage() {
   const phase1 = phaseMetrics.phase1;
