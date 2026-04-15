@@ -30,20 +30,20 @@ async def load_model():
     model.fc = nn.Sequential(
         nn.Linear(num_features, 256),
         nn.ReLU(),
-        nn.Dropout(0.3),
+        nn.Dropout(0.5),
         nn.Linear(256, 2)
     )
     
     # Load weights
-    checkpoint = torch.load("models/pneumonia_model_full.pt", map_location=device)
-    model.load_state_dict(checkpoint['model_state_dict'])
+    checkpoint = torch.load("models/resnet18_pneumonia_best_finetuned.pth", map_location=device)
+    model.load_state_dict(checkpoint['model_state_dict'] if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint else checkpoint)
     model.to(device)
     model.eval()
     print(f"✅ Model loaded on {device}")
 
 # Image preprocessing
 transform = transforms.Compose([
-    transforms.Resize((224, 224)),
+    transforms.Resize((224, 244)),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
