@@ -19,3 +19,7 @@ services:
         value: "1"
       - key: INFERENCE_MAX_IMAGE_BYTES
         value: "6291456"
+      - key: MODEL_PATH
+        value: "models/pneumonia_model_full.pt"
+      - key: PNEUMONIA_THRESHOLD
+        value: "0.5"
