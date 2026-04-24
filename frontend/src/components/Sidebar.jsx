@@ -8,7 +8,7 @@ function Sidebar({ activePage, onChange }) {
     <aside className="sidebar">
       <div className="brand">
         <p className="brand-kicker">Medical AI</p>
-        <h1>Pneumonia Detector</h1>
+        <h1>PneumoNet</h1>
       </div>
 
       <nav className="sidebar-nav">
