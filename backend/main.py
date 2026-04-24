@@ -5,14 +5,22 @@ import time
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, ORJSONResponse
+from fastapi.responses import JSONResponse
 from starlette.concurrency import run_in_threadpool
 import torch
 import torch.nn as nn
 from torchvision import transforms, models
 from PIL import Image
 
-app = FastAPI(title="XRay Pneumonia Detector API", default_response_class=ORJSONResponse)
+try:
+    import orjson  # noqa: F401
+    from fastapi.responses import ORJSONResponse
+    DefaultResponseClass = ORJSONResponse
+except Exception:
+    # Keep API running even if optional orjson package is missing.
+    DefaultResponseClass = JSONResponse
+
+app = FastAPI(title="XRay Pneumonia Detector API", default_response_class=DefaultResponseClass)
 
 app.add_middleware(
     CORSMiddleware,
