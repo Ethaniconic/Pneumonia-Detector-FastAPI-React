@@ -1,7 +1,6 @@
 function FileUploader({ previewUrl, onFileSelect, disabled }) {
   const compressImage = (file) =>
     new Promise((resolve) => {
-      // Skip compression for already-small files.
       if (file.size <= 1024 * 1024) {
         resolve(file);
         return;
@@ -98,9 +97,10 @@ function FileUploader({ previewUrl, onFileSelect, disabled }) {
       {previewUrl ? (
         <img src={previewUrl} alt="X-ray preview" className="xray-preview" />
       ) : (
-        <div className="upload-placeholder">
-          <p className="upload-title">Drop chest X-ray image</p>
-          <p className="upload-subtitle">or click to choose a file</p>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📁</div>
+          <p className="upload-title">Drop Chest X-Ray</p>
+          <p className="upload-subtitle">Supported formats: JPG, PNG</p>
         </div>
       )}
     </label>

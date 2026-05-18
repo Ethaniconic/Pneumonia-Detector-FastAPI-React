@@ -1,14 +1,14 @@
 const links = [
-  { id: 'diagnosis', title: 'Diagnosis', subtitle: 'Upload and predict' },
-  { id: 'evolution', title: 'Model Evolution', subtitle: 'Training proof page' },
+  { id: 'diagnosis', title: 'Diagnosis', subtitle: 'AI Triage & Analysis' },
+  { id: 'evolution', title: 'Training Metrics', subtitle: 'Performance Logs' },
 ];
 
-function Sidebar({ activePage, onChange }) {
+function Sidebar({ activePage, onChange, theme, onToggleTheme }) {
   return (
     <aside className="sidebar">
       <div className="brand">
-        <p className="brand-kicker">Medical AI</p>
-        <h1>PneumoNet</h1>
+        <p className="brand-kicker">Vision AI Research</p>
+        <h1>PneumoScan</h1>
       </div>
 
       <nav className="sidebar-nav">
@@ -24,6 +24,16 @@ function Sidebar({ activePage, onChange }) {
           </button>
         ))}
       </nav>
+
+      <div style={{ marginTop: 'auto', paddingTop: '2rem' }}>
+        <button 
+          onClick={onToggleTheme} 
+          className="nav-item" 
+          style={{ width: '100%', textAlign: 'center' }}
+        >
+          {theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode'}
+        </button>
+      </div>
     </aside>
   );
 }

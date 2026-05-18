@@ -47,15 +47,19 @@ function DiagnosisPage() {
     try {
       const response = await axios.post(`${API_BASE_URL}/predict`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
-        timeout: 30000,
+        timeout: 60000,
       });
       setResult(response.data);
     } catch (requestError) {
       setResult(null);
+      console.error('Prediction Error:', requestError);
+      const backendError = requestError.response?.data?.error || requestError.response?.data?.detail;
       if (requestError.code === 'ECONNABORTED') {
-        setError('Request timed out. Please try a smaller image or try again shortly.');
+        setError('Request timed out. The server might be waking up or the image is too large.');
+      } else if (backendError) {
+        setError(`Server Error: ${backendError}`);
       } else {
-        setError(requestError.response?.data?.error || 'Prediction failed. Please verify backend service.');
+        setError('Prediction failed. The server might be out of memory or unavailable.');
       }
     } finally {
       setLoading(false);
@@ -65,12 +69,12 @@ function DiagnosisPage() {
   return (
     <section className="page">
       <header className="page-header">
-        <p className="section-kicker">Live Inference</p>
-        <h2>Upload an X-ray and get instant classification</h2>
-        <p>Designed for fast triage support. This tool does not replace clinical judgment.</p>
+        <p className="section-kicker">Intelligent Diagnostic System</p>
+        <h2>Chest X-Ray Analysis</h2>
+        <p>Advanced neural network for pneumonia detection and structural analysis.</p>
       </header>
 
-      <form className="diagnosis-grid" onSubmit={handleSubmit}>
+      <div className="diagnosis-grid">
         <article className="panel">
           <FileUploader
             previewUrl={previewUrl}
@@ -82,15 +86,20 @@ function DiagnosisPage() {
             disabled={loading}
           />
 
-          <button type="submit" className="primary-btn" disabled={!selectedFile || loading}>
-            {loading ? 'Analyzing image...' : 'Run prediction'}
+          <button 
+            type="button" 
+            className="primary-btn" 
+            disabled={!selectedFile || loading}
+            onClick={handleSubmit}
+          >
+            {loading ? 'Processing Intelligence...' : 'Run Analysis'}
           </button>
 
           {error ? <p className="error-text">{error}</p> : null}
         </article>
 
         <ResultCard result={result} />
-      </form>
+      </div>
     </section>
   );
 }
